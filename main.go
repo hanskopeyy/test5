@@ -77,12 +77,3 @@ func main() {
 
 	log.Fatal(http.ListenAndServe(":8000", handlers.CORS(originsOk, headersOk, methodsOk)(router)))
 }
-
-// func mount(r *mux.Router, path string, handler http.Handler) {
-// 	r.PathPrefix(path).Handler(
-// 		http.StripPrefix(
-// 			strings.TrimSuffix(path, "/"),
-// 			handler,
-// 		),
-// 	)
-// }

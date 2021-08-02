@@ -479,6 +479,30 @@ CREATE TABLE `t_news_detail` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `t_news_images`
+--
+
+CREATE TABLE `t_news_images` (
+  `id` int(11) NOT NULL,
+  `image_name` varchar(15) NOT NULL,
+  `image_checksum` varchar(32) DEFAULT NULL,
+  `uploader` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `t_news_images_favorite`
+--
+
+CREATE TABLE `t_news_images_favorite` (
+  `userId` int(11) NOT NULL,
+  `imageId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `t_news_type`
 --
 
@@ -846,6 +870,11 @@ ALTER TABLE `t_news_type`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `t_news_images`
+--
+ALTER TABLE `t_news_images`
+  ADD PRIMARY KEY (`id`);
+
 -- Indexes for table `t_premium`
 --
 ALTER TABLE `t_premium`
@@ -1039,6 +1068,12 @@ ALTER TABLE `t_mail_template`
 -- AUTO_INCREMENT for table `t_news`
 --
 ALTER TABLE `t_news`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `t_news_images`
+--
+ALTER TABLE `t_news_images`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
