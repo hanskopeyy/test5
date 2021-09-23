@@ -17,7 +17,7 @@ func AddKsatriyaSkinFragment(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_ksatriya_skin_fragment(ksatriya_skin_id, amount_needed, sell_currency_id, sell_value) VALUES (?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_ksatriya_skin_fragment(ksatriya_skin_id, amount_needed, sell_currency_id, sell_value) VALUES (?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -40,7 +40,7 @@ func GetAllKsatriyaSkinFragment(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var ksatriya_skin_fragments []model.Ksatriya_skin_fragment
 
-	result, err := db.Query("SELECT * from t_ksatriya_skin")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_ksatriya_skin")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -66,7 +66,7 @@ func GetKsatriyaSkinFragment(w http.ResponseWriter, r *http.Request) {
 	ksatriya_skin_id := r.URL.Query().Get("ksatriya_skin_id")
 
 	var ksatriya_skin_fragment model.Ksatriya_skin_fragment
-	result, err := db.Query("SELECT * from t_ksatriya_skin where ksatriya_skin_id = ? ", ksatriya_skin_id)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_ksatriya_skin where ksatriya_skin_id = ? ", ksatriya_skin_id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -94,7 +94,7 @@ func UpdateKsatriyaSkinFragment(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_ksatriya_skin_fragment SET amount_needed = ?, sell_currency_id = ?, sell_value = ? where ksatriya_skin_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_ksatriya_skin_fragment SET amount_needed = ?, sell_currency_id = ?, sell_value = ? where ksatriya_skin_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -117,7 +117,7 @@ func DeleteKsatriyaSkinFragment(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	ksatriya_skin_id := r.URL.Query().Get("ksatriya_skin_id")
 
-	stmt, err := db.Prepare("DELETE FROM t_ksatriya_skin_fragment WHERE ksatriya_skin_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_ksatriya_skin_fragment WHERE ksatriya_skin_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

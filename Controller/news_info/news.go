@@ -17,7 +17,7 @@ func AddNews(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_news(name, release_date, type) VALUES (?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO t_news_v2(name, release_date, type) VALUES (?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -39,14 +39,14 @@ func GetAllNews(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var allNews []model.News
 
-	result, err := db.Query("SELECT * FROM t_news")
+	result, err := db.Query("SELECT A.id, A.name, A.release_date,A.type, B.name AS news_type FROM lokapala_accountdb.t_news_v2 A LEFT JOIN lokapala_accountdb.t_news_v2_type B ON A.type = B.id")
 	if err != nil {
 		panic(err.Error())
 	}
 
 	for result.Next() {
 		var news model.News
-		err := result.Scan(&news.Id, &news.Name, &news.Release_date, &news.Type)
+		err := result.Scan(&news.Id, &news.Name, &news.Release_date, &news.Type, &news.Type_name)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -62,14 +62,14 @@ func GetNews(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var news model.News
-	result, err := db.Query("SELECT * from t_news where id = ? ", id)
+	result, err := db.Query("SELECT A.id, A.name, A.release_date,A.type, B.name AS news_type FROM lokapala_accountdb.t_news_v2 A LEFT JOIN lokapala_accountdb.t_news_v2_type B ON A.type = B.id where A.id = ? ", id)
 	if err != nil {
 		panic(err.Error())
 	}
 
 	for result.Next() {
 
-		err := result.Scan(&news.Id, &news.Name, &news.Release_date, &news.Type)
+		err := result.Scan(&news.Id, &news.Name, &news.Release_date, &news.Type, &news.Type_name)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -89,7 +89,7 @@ func UpdateNews(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_news SET name = ?, release_date = ?, type = ? WHERE id = ?")
+	stmt, err := db.Prepare("UPDATE t_news_v2 SET name = ?, release_date = ?, type = ? WHERE id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -111,7 +111,7 @@ func DeleteNews(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_news WHERE id = ?")
+	stmt, err := db.Prepare("DELETE FROM t_news_v2 WHERE id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

@@ -17,12 +17,7 @@ func Createcustommail(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_mail_custom_message(subject, message) VALUES (?,?)")
-	if err != nil {
-		panic(err.Error())
-	}
-
-	stmt2, err := db.Prepare("INSERT INTO t_mail_attachment(item_id, item_type, amount, custom_message_id) VALUES (?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_mail_custom_message(subject, message) VALUES (?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -43,9 +38,18 @@ func Createcustommail(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	_, err = stmt2.Exec(item_id, item_type_id, amount, custom_message_id)
-	if err != nil {
-		panic(err.Error())
+	if item_type_id != "" && item_id != "" && amount != "" {
+
+		stmt2, err := db.Prepare("INSERT INTO lokapala_accountdb.t_mail_attachment(item_id, item_type, amount, custom_message_id) VALUES (?,?,?,?)")
+		if err != nil {
+			panic(err.Error())
+		}
+
+		_, err = stmt2.Exec(item_id, item_type_id, amount, custom_message_id)
+		if err != nil {
+			panic(err.Error())
+		}
+
 	}
 
 	json.NewEncoder(w).Encode("Success")
@@ -57,7 +61,7 @@ func Getcustommails(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var custom_mails []model.Custom_mail
 
-	result, err := db.Query("SELECT * from t_mail_custom_message")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_mail_custom_message")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -83,7 +87,7 @@ func Getcustommail(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 	var custom_mail model.Custom_mail
 
-	result, err := db.Query("SELECT * from t_mail_custom_message where message_id = ?", id)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_mail_custom_message where message_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -110,7 +114,7 @@ func Updatecustommail(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_mail_custom_message SET subject = ?, message = ? where message_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_mail_custom_message SET subject = ?, message = ? where message_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -132,7 +136,17 @@ func Deletecustommail(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_mail_custom_message WHERE message_id = ?")
+	stmt2, err := db.Prepare("DELETE FROM lokapala_accountdb.t_mail_custom_message WHERE message_id = ? AND template_id = NULL")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	_, err = stmt2.Exec(id)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_mail_custom_message WHERE message_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

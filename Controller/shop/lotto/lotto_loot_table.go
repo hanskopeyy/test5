@@ -17,7 +17,7 @@ func AddlottoLoot(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_lotto_loot_table(lotto_id, lotto_item_id, amount) VALUES (?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_lotto_loot_table(lotto_id, lotto_item_id, amount) VALUES (?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -38,7 +38,7 @@ func GetlottoLoots(w http.ResponseWriter, r *http.Request) {
 	db := controller.Open()
 	defer db.Close()
 	var l_loots []model.Lotto_loot_table
-	result, err := db.Query("SELECT * FROM t_lotto_loot_table")
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_lotto_loot_table")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -63,7 +63,7 @@ func GetlottoLoot(w http.ResponseWriter, r *http.Request) {
 	l_item_id := r.URL.Query().Get("item_id")
 
 	var l_loot model.Lotto_loot_table
-	results, err := db.Prepare("SELECT * from t_lotto_loot_table WHERE lotto_id = ? AND lotto_item_id = ?")
+	results, err := db.Prepare("SELECT * from lokapala_accountdb.t_lotto_loot_table WHERE lotto_id = ? AND lotto_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -89,7 +89,7 @@ func GetlottoLootByLottoId(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var l_loot model.Lotto_loot_table
-	result, err := db.Query("SELECT * FROM t_lotto_loot_table WHERE lotto_id = ?", id)
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_lotto_loot_table WHERE lotto_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -114,7 +114,7 @@ func UpdatelottoLoot(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_lotto_loot_table SET amount = ? WHERE lotto_id = ? AND lotto_item_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_lotto_loot_table SET amount = ? WHERE lotto_id = ? AND lotto_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -135,7 +135,7 @@ func DeletelottoLoot(w http.ResponseWriter, r *http.Request) {
 	l_id := r.URL.Query().Get("id")
 	l_item_id := r.URL.Query().Get("item_id")
 
-	stmt, err := db.Prepare("DELETE FROM t_lotto_loot_table WHERE lotto_id = ? AND lotto_item_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_lotto_loot_table WHERE lotto_id = ? AND lotto_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

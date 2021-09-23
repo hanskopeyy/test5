@@ -17,7 +17,7 @@ func AddLotus(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_shop_lotus(shop_lotus_period_id, shop_lotus_item_id, player_limit) VALUES (?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_shop_lotus(shop_lotus_period_id, shop_lotus_item_id, player_limit) VALUES (?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -39,7 +39,7 @@ func GetAllLotus(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var shop_lotuss []model.Shop_lotus
 
-	result, err := db.Query("SELECT * from t_shop_lotus")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_shop_lotus")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -66,7 +66,7 @@ func GetLotus(w http.ResponseWriter, r *http.Request) {
 	id2 := r.URL.Query().Get("id2")
 
 	var shop_lotus model.Shop_lotus
-	results, err := db.Prepare("SELECT * from t_shop_lotus where shop_lotus_period_id = ? AND shop_lotus_item_id =? ")
+	results, err := db.Prepare("SELECT * from lokapala_accountdb.t_shop_lotus where shop_lotus_period_id = ? AND shop_lotus_item_id =? ")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -100,7 +100,7 @@ func UpdateLotusShop(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_shop_lotus SET shop_lotus_period_id = ?, shop_lotus_item_id = ?, player_limit = ? where shop_lotus_item_id = ? AND shop_lotus_period_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_shop_lotus SET shop_lotus_period_id = ?, shop_lotus_item_id = ?, player_limit = ? where shop_lotus_item_id = ? AND shop_lotus_period_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -124,7 +124,7 @@ func DeleteLotusShop(w http.ResponseWriter, r *http.Request) {
 	id1 := r.URL.Query().Get("id1")
 	id2 := r.URL.Query().Get("id2")
 
-	stmt, err := db.Prepare("DELETE FROM t_shop_lotus WHERE shop_lotus_period_id = ? AND shop_lotus_item_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_shop_lotus WHERE shop_lotus_period_id = ? AND shop_lotus_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

@@ -1,10 +1,10 @@
 package model
 
 type Ksatriya struct {
-	Ksatriya_id   int64  `json:"ksatriya_id"`
-	Role          string `json:"role"`
-	Release_date  string `json:"release_date"`
-	Ksatriya_name string `json:"ksatriya_name"`
+	Ksatriya_id   int64   `json:"ksatriya_id"`
+	Role          *string `json:"role"`
+	Release_date  *string `json:"release_date"`
+	Ksatriya_name *string `json:"ksatriya_name"`
 }
 
 type Ksatriya_fragment struct {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2021 at 12:11 PM
+-- Generation Time: Sep 06, 2021 at 11:26 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `gm_tool_test`
+-- Database: `lokapala_accountdb`
 --
 CREATE DATABASE IF NOT EXISTS `gm_tool_test` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `gm_tool_test`;
@@ -33,7 +33,6 @@ CREATE TABLE `permissions` (
   `id` bigint(20) NOT NULL,
   `permission_name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `active` tinyint(4) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -42,12 +41,18 @@ CREATE TABLE `permissions` (
 -- Dumping data for table `permissions`
 --
 
-INSERT INTO `permissions` (`id`, `permission_name`, `description`, `active`, `created_at`, `updated_at`) VALUES
-(1, 'modify_user', 'Create, edit, delete users', 1, '2021-05-19 07:13:46', '2021-05-19 07:13:46'),
-(2, 'shop_control', 'Create, edit, delete shop data', 1, '2021-06-24 07:53:16', '2021-06-24 07:53:16'),
-(3, 'player_report_control', 'modify player and view reports', 1, '2021-07-27 08:41:44', '2021-07-27 08:41:44'),
-(4, 'send_mail', 'Send mail', 1, '2021-05-20 10:05:16', '2021-05-20 10:05:16'),
-(6, 'ksa_rotation', 'control free ksatriya rotation', 1, '2021-07-27 11:05:38', '2021-07-27 11:05:38');
+INSERT INTO `permissions` (`id`, `permission_name`, `description`, `created_at`, `updated_at`) VALUES
+(1, 'modify_user', 'Create, edit, delete users', '2021-05-19 07:13:46', '2021-05-19 07:13:46'),
+(2, 'shop_control', 'Create, edit, delete shop data',  '2021-06-24 07:53:16', '2021-06-24 07:53:16'),
+(3, 'player_report_control', 'modify player and view reports', '2021-07-27 08:41:44', '2021-07-27 08:41:44'),
+(4, 'send_mail', 'Send mail', '2021-05-20 10:05:16', '2021-05-20 10:05:16'),
+(5, 'matches', 'manage matches', '2021-08-19 11:27:03', '2021-08-19 11:27:03'),
+(6, 'ksa_rotation', 'control free ksatriya rotation', '2021-07-27 11:05:38', '2021-07-27 11:05:38'),
+(7, 'player_reports', 'read player reports and take action', '2021-08-19 11:27:30', '2021-08-19 11:27:30'),
+(8, 'blacklist_player_chat', 'blacklist players from chatting', '2021-08-24 09:25:08', '2021-08-24 09:25:08'),
+(9, 'voucher', 'generate and manage vouchers', '2021-09-17 08:33:00', '2021-09-17 08:33:00'),
+(10, 'judge_control', 'manage judge accounts', '2021-09-17 08:33:00', '2021-09-17 08:33:00'),
+(11, 'user_statistics', 'see user statistics', '2021-09-21 12:57:08', '2021-09-21 12:57:08');
 
 -- --------------------------------------------------------
 
@@ -95,8 +100,13 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`, `created_at`)
 (4, 1, 4, '2021-06-09 09:38:39'),
 (6, 1, 2, '2021-06-24 07:59:39'),
 (7, 1, 3, '2021-07-27 08:44:59'),
-(8, 1, 6, '2021-07-27 11:07:57');
-
+(8, 1, 6, '2021-07-27 11:07:57'),
+(9, 1, 5, '2021-08-20 13:34:26'),
+(10, 1, 7, '2021-08-20 13:34:26'),
+(11, 1, 8, '2021-08-20 13:34:26'),
+(12, 1, 9, '2021-09-17 08:34:38'),
+(13, 1, 10, '2021-09-20 07:39:36'),
+(14, 1, 11, '2021-09-21 12:57:08');
 -- --------------------------------------------------------
 
 --
@@ -136,6 +146,34 @@ CREATE TABLE `t_chest` (
   `duration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `t_chest`
+--
+
+INSERT INTO `t_chest` (`duration`) VALUES
+(3),
+(6),
+(12);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `t_country`
+--
+
+CREATE TABLE `t_country` (
+  `country_id` int(11) NOT NULL,
+  `country_code` varchar(2) DEFAULT NULL,
+  `country_name` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t_country`
+--
+
+INSERT INTO `t_country` (`country_id`, `country_code`, `country_name`) VALUES
+(102, 'ID', 'Indonesia');
+
 -- --------------------------------------------------------
 
 --
@@ -146,6 +184,15 @@ CREATE TABLE `t_currency_type` (
   `currency_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t_currency_type`
+--
+
+INSERT INTO `t_currency_type` (`currency_id`, `name`) VALUES
+(1, 'Ori'),
+(2, 'Citrine'),
+(3, 'Lotus');
 
 -- --------------------------------------------------------
 
@@ -158,6 +205,18 @@ CREATE TABLE `t_energy` (
   `description` tinytext NOT NULL,
   `target` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t_energy`
+--
+
+INSERT INTO `t_energy` (`energy_id`, `description`, `target`) VALUES
+(1, '10 Energy', 10),
+(2, '35 Energy', 35),
+(4, '50 Energy', 50),
+(8, '75 Energy', 75),
+(16, '225 Energy', 225),
+(32, '500 Energy', 500);
 
 -- --------------------------------------------------------
 
@@ -224,6 +283,13 @@ CREATE TABLE `t_icon_avatar` (
   `release_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `t_icon_avatar`
+--
+
+INSERT INTO `t_icon_avatar` (`avatar_id`, `description`, `release_date`) VALUES
+(1, 'avatar1', '2021-08-26 09:47:10');
+
 -- --------------------------------------------------------
 
 --
@@ -236,6 +302,13 @@ CREATE TABLE `t_icon_frame` (
   `release_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `t_icon_frame`
+--
+
+INSERT INTO `t_icon_frame` (`frame_id`, `description`, `release_date`) VALUES
+(0, 'none', '2021-08-26 09:46:05');
+
 -- --------------------------------------------------------
 
 --
@@ -246,6 +319,28 @@ CREATE TABLE `t_item_type` (
   `item_type_id` int(11) NOT NULL,
   `item_type_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t_item_type`
+--
+
+INSERT INTO `t_item_type` (`item_type_id`, `item_type_name`) VALUES
+(1, 'currency'),
+(2, 'ksatriya'),
+(3, 'Skin'),
+(4, 'Rune'),
+(5, 'Item'),
+(6, 'Box'),
+(7, 'Chest'),
+(8, 'Energy'),
+(9, 'Skin Part'),
+(10, 'Premium'),
+(11, 'Frame'),
+(12, 'Avatar'),
+(13, 'Vikara'),
+(14, 'Vahana'),
+(15, 'Ksatriya Fragment'),
+(16, 'Skin Fragment');
 
 -- --------------------------------------------------------
 
@@ -408,6 +503,13 @@ CREATE TABLE `t_mail` (
   `custom_message_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `t_mail`
+--
+
+INSERT INTO `t_mail` (`mail_id`, `mail_type`, `sender_id`, `reciever_id`, `send_date`, `mail_template`, `confirm_read`, `read_date`, `confirn_claim`, `claim_date`, `parameter`, `custom_message_id`) VALUES
+(1, 'Friend', NULL, 1, '2021-08-27 14:13:03', 1, 0, '2021-08-27 14:13:03', 0, '2021-08-27 14:13:03', NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -422,6 +524,13 @@ CREATE TABLE `t_mail_attachment` (
   `amount` int(11) NOT NULL,
   `custom_message_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t_mail_attachment`
+--
+
+INSERT INTO `t_mail_attachment` (`id`, `template_id`, `item_id`, `item_type`, `amount`, `custom_message_id`) VALUES
+(1, 5, 1, 1, 100000, NULL);
 
 -- --------------------------------------------------------
 
@@ -438,6 +547,19 @@ CREATE TABLE `t_mail_custom_message` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `t_mail_login`
+--
+
+CREATE TABLE `t_mail_login` (
+  `template_id` int(11) NOT NULL,
+  `parameter` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `start_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `end_date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `t_mail_template`
 --
 
@@ -446,6 +568,16 @@ CREATE TABLE `t_mail_template` (
   `subject` tinytext NOT NULL,
   `message` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t_mail_template`
+--
+
+INSERT INTO `t_mail_template` (`template_id`, `subject`, `message`) VALUES
+(1, 'test subject', 'this is a test message'),
+(3, 'test subject no 32', 'this is a test message 32'),
+(4, 'test subject no 3', 'this is a test message 3'),
+(5, 'test subject no 4', 'this is a test message 4');
 
 -- --------------------------------------------------------
 
@@ -484,20 +616,9 @@ CREATE TABLE `t_news_detail` (
 
 CREATE TABLE `t_news_images` (
   `id` int(11) NOT NULL,
-  `image_name` varchar(15) NOT NULL,
-  `image_checksum` varchar(32) DEFAULT NULL,
-  `uploader` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `t_news_images_favorite`
---
-
-CREATE TABLE `t_news_images_favorite` (
-  `userId` int(11) NOT NULL,
-  `imageId` int(11) NOT NULL
+  `image_name` varchar(255) NOT NULL,
+  `image_checksum` varchar(255) NOT NULL,
+  `uploader` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -552,6 +673,13 @@ CREATE TABLE `t_shop` (
   `release_date` datetime DEFAULT NULL,
   `description` tinytext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t_shop`
+--
+
+INSERT INTO `t_shop` (`shop_id`, `item_id`, `item_type`, `amount`, `price_coin`, `price_citrine`, `price_lotus`, `release_date`, `description`) VALUES
+(1, 2, 2, 1, NULL, 100000, NULL, '2021-07-06 07:23:22', '0');
 
 -- --------------------------------------------------------
 
@@ -608,6 +736,32 @@ CREATE TABLE `t_shop_lotus_period` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `t_user`
+--
+
+CREATE TABLE `t_user` (
+  `user_id` int(11) NOT NULL,
+  `user_name` varchar(45) NOT NULL,
+  `avatar_icon` int(11) NOT NULL DEFAULT 1,
+  `karma` tinyint(4) NOT NULL DEFAULT 100,
+  `gender` enum('M','F') DEFAULT NULL,
+  `country` int(11) NOT NULL DEFAULT 102,
+  `role` int(11) NOT NULL DEFAULT 0,
+  `playing_time` int(11) NOT NULL DEFAULT 0,
+  `frame` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `t_user`
+--
+
+INSERT INTO `t_user` (`user_id`, `user_name`, `avatar_icon`, `karma`, `gender`, `country`, `role`, `playing_time`, `frame`) VALUES
+(5, 'player1', 1, 100, NULL, 102, 0, 0, 0),
+(6, 'player2', 1, 100, NULL, 102, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -644,8 +798,7 @@ CREATE TABLE `users_roles` (
 --
 
 INSERT INTO `users_roles` (`id`, `user_id`, `role_id`, `created_at`) VALUES
-(1, 1, 1, '2021-06-02 06:38:23'),
-(3, 4, 2, '2021-06-02 12:02:48');
+(1, 1, 1, '2021-06-02 06:38:23');
 
 --
 -- Indexes for dumped tables
@@ -690,6 +843,12 @@ ALTER TABLE `t_box_loot_table`
 --
 ALTER TABLE `t_chest`
   ADD PRIMARY KEY (`duration`);
+
+--
+-- Indexes for table `t_country`
+--
+ALTER TABLE `t_country`
+  ADD PRIMARY KEY (`country_id`);
 
 --
 -- Indexes for table `t_currency_type`
@@ -846,6 +1005,12 @@ ALTER TABLE `t_mail_custom_message`
   ADD PRIMARY KEY (`message_id`);
 
 --
+-- Indexes for table `t_mail_login`
+--
+ALTER TABLE `t_mail_login`
+  ADD PRIMARY KEY (`template_id`);
+
+--
 -- Indexes for table `t_mail_template`
 --
 ALTER TABLE `t_mail_template`
@@ -864,17 +1029,19 @@ ALTER TABLE `t_news_detail`
   ADD PRIMARY KEY (`news_id`,`lang`);
 
 --
+-- Indexes for table `t_news_images`
+--
+ALTER TABLE `t_news_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `uploader` (`uploader`);
+
+--
 -- Indexes for table `t_news_type`
 --
 ALTER TABLE `t_news_type`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `t_news_images`
---
-ALTER TABLE `t_news_images`
-  ADD PRIMARY KEY (`id`);
-
 -- Indexes for table `t_premium`
 --
 ALTER TABLE `t_premium`
@@ -921,6 +1088,16 @@ ALTER TABLE `t_shop_lotus_period`
   ADD PRIMARY KEY (`shop_lotus_period_id`);
 
 --
+-- Indexes for table `t_user`
+--
+ALTER TABLE `t_user`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `user_name` (`user_name`),
+  ADD KEY `t_user_ibfk_1` (`avatar_icon`),
+  ADD KEY `t_user_ibfk_2` (`frame`),
+  ADD KEY `country` (`country`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -942,7 +1119,7 @@ ALTER TABLE `users_roles`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -954,7 +1131,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `t_box`
@@ -969,10 +1146,16 @@ ALTER TABLE `t_box_loot_table`
   MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `t_country`
+--
+ALTER TABLE `t_country`
+  MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+
+--
 -- AUTO_INCREMENT for table `t_currency_type`
 --
 ALTER TABLE `t_currency_type`
-  MODIFY `currency_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `currency_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `t_gacha`
@@ -996,7 +1179,7 @@ ALTER TABLE `t_gacha_item`
 -- AUTO_INCREMENT for table `t_item_type`
 --
 ALTER TABLE `t_item_type`
-  MODIFY `item_type_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `item_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `t_ksatriya`
@@ -1044,13 +1227,13 @@ ALTER TABLE `t_lotto_item_color`
 -- AUTO_INCREMENT for table `t_mail`
 --
 ALTER TABLE `t_mail`
-  MODIFY `mail_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `mail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `t_mail_attachment`
 --
 ALTER TABLE `t_mail_attachment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `t_mail_custom_message`
@@ -1062,7 +1245,7 @@ ALTER TABLE `t_mail_custom_message`
 -- AUTO_INCREMENT for table `t_mail_template`
 --
 ALTER TABLE `t_mail_template`
-  MODIFY `template_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `template_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `t_news`
@@ -1092,7 +1275,7 @@ ALTER TABLE `t_rune`
 -- AUTO_INCREMENT for table `t_shop`
 --
 ALTER TABLE `t_shop`
-  MODIFY `shop_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `shop_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `t_shop_lotus_item`
@@ -1105,6 +1288,12 @@ ALTER TABLE `t_shop_lotus_item`
 --
 ALTER TABLE `t_shop_lotus_period`
   MODIFY `shop_lotus_period_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `t_user`
+--
+ALTER TABLE `t_user`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -1217,10 +1406,22 @@ ALTER TABLE `t_mail_attachment`
   ADD CONSTRAINT `t_mail_attachment_ibfk_3` FOREIGN KEY (`item_type`) REFERENCES `t_item_type` (`item_type_id`);
 
 --
+-- Constraints for table `t_mail_login`
+--
+ALTER TABLE `t_mail_login`
+  ADD CONSTRAINT `t_mail_login_ibfk_1` FOREIGN KEY (`template_id`) REFERENCES `t_mail_template` (`template_id`);
+
+--
 -- Constraints for table `t_news_detail`
 --
 ALTER TABLE `t_news_detail`
   ADD CONSTRAINT `t_news_detail_ibfk_1` FOREIGN KEY (`news_id`) REFERENCES `t_news` (`id`);
+
+--
+-- Constraints for table `t_news_images`
+--
+ALTER TABLE `t_news_images`
+  ADD CONSTRAINT `t_news_images_ibfk_1` FOREIGN KEY (`uploader`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `t_shop`
@@ -1247,6 +1448,14 @@ ALTER TABLE `t_shop_lotus`
 --
 ALTER TABLE `t_shop_lotus_item`
   ADD CONSTRAINT `t_shop_lotus_item_ibfk_1` FOREIGN KEY (`item_type`) REFERENCES `t_item_type` (`item_type_id`);
+
+--
+-- Constraints for table `t_user`
+--
+ALTER TABLE `t_user`
+  ADD CONSTRAINT `t_user_ibfk_1` FOREIGN KEY (`avatar_icon`) REFERENCES `t_icon_avatar` (`avatar_id`),
+  ADD CONSTRAINT `t_user_ibfk_2` FOREIGN KEY (`frame`) REFERENCES `t_icon_frame` (`frame_id`),
+  ADD CONSTRAINT `t_user_ibfk_3` FOREIGN KEY (`country`) REFERENCES `t_country` (`country_id`);
 
 --
 -- Constraints for table `users_roles`

@@ -17,7 +17,7 @@ func AddnewKsatriyaRotation(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_ksatriya_rotation(ksatriya_id,start_date, end_date) VALUES (?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_ksatriya_rotation(ksatriya_id,start_date, end_date) VALUES (?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -38,7 +38,7 @@ func GetAllKsatriyasRotation(w http.ResponseWriter, r *http.Request) {
 	db := controller.Open()
 	defer db.Close()
 	var ksatriyas_rotation []model.Ksatriya_rotation
-	result, err := db.Query("SELECT * FROM t_ksatriya_rotation")
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_ksatriya_rotation")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -62,7 +62,7 @@ func GetKsatriyaRotation(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("ksatriya_rotation_id")
 
 	var ksatriya_rotation model.Ksatriya_rotation
-	result, err := db.Query("SELECT * FROM t_ksatriya_rotation WHERE ksatriya_id = ?", id)
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_ksatriya_rotation WHERE ksatriya_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -87,7 +87,7 @@ func UpdateKsatriyaRotation(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_ksatriya_rotation SET ksatriya_id = ?, start_date = ?, end_date = ? WHERE ksatriya_rotation_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_ksatriya_rotation SET ksatriya_id = ?, start_date = ?, end_date = ? WHERE ksatriya_rotation_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -109,7 +109,7 @@ func DeleteKsatriyaRotation(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("ksatriya_rotation_id")
 
-	stmt, err := db.Prepare("DELETE FROM t_ksatriya_rotation WHERE ksatriya_rotation_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_ksatriya_rotation WHERE ksatriya_rotation_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

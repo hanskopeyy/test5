@@ -8,5 +8,7 @@ require (
 	github.com/gorilla/handlers v1.5.1
 	github.com/gorilla/mux v1.8.0 // indirect
 	github.com/joho/godotenv v1.3.0 // indirect
+	github.com/rs/cors v1.8.0 // indirect
+	github.com/secsy/goftp v0.0.0-20200609142545-aa2de14babf4 // indirect
 	golang.org/x/crypto v0.0.0-20210505212654-3497b51f5e64 // indirect
 )

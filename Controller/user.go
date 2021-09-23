@@ -23,7 +23,7 @@ var err error
 var JwtKey = []byte(goDotEnvVariable("SECRET_KEY"))
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	db := Open()
+	db := OpenGMAdmin()
 	defer db.Close()
 	w.Header().Add("Content-Type", "application/json")
 	err := r.ParseMultipartForm(4096)
@@ -53,7 +53,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	check := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if check != nil {
-		fmt.Fprintf(w, "{'invalid password'}")
+		json.NewEncoder(w).Encode("Wrong Password")
 		panic(check.Error())
 	} else {
 		// fmt.Println("SUCCESSSSSSSSSSSSSSSSSSSSS")
@@ -103,7 +103,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	db := Open()
+	db := OpenGMAdmin()
 	defer db.Close()
 	w.Header().Add("Content-Type", "application/json")
 	err := r.ParseMultipartForm(4096)
@@ -111,10 +111,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	stmt, err := db.Prepare("INSERT INTO users(name, email, password) VALUES (?,?,?)")
-	if err != nil {
-		panic(err.Error())
-	}
-	stmt2, err := db.Prepare("INSERT INTO users_roles(user_id, role_id) VALUES (?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -135,25 +131,32 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	stmt3, err := db.Query("SELECT users.id FROM users WHERE email LIKE ?  ", email)
-	if err != nil {
-		panic(err.Error())
-	}
+	fmt.Println(role_id)
 
-	defer stmt.Close()
-
-	var user model.User
-
-	for stmt3.Next() {
-		err := stmt3.Scan(&user.Id)
+	if len(role_id) > 0 {
+		stmt2, err := db.Prepare("INSERT INTO users_roles(user_id, role_id) VALUES (?,?)")
 		if err != nil {
 			panic(err.Error())
 		}
-	}
 
-	_, err = stmt2.Exec(user.Id, role_id)
-	if err != nil {
-		panic(err.Error())
+		stmt3, err := db.Query("SELECT id FROM users WHERE email LIKE ?  ", email)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		var user model.User
+
+		for stmt3.Next() {
+			err := stmt3.Scan(&user.Id)
+			if err != nil {
+				panic(err.Error())
+			}
+		}
+
+		_, err = stmt2.Exec(user.Id, role_id)
+		if err != nil {
+			panic(err.Error())
+		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")

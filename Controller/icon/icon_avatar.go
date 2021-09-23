@@ -17,7 +17,7 @@ func AddiconAvatar(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_icon_avatar(avatar_id, description, release_date) VALUES (?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_icon_avatar(avatar_id, description, release_date) VALUES (?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -38,14 +38,14 @@ func GeticonAvatars(w http.ResponseWriter, r *http.Request) {
 	db := controller.Open()
 	defer db.Close()
 	var avatars []model.Icon_avatar
-	result, err := db.Query("SELECT * FROM t_icon_avatar")
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_icon_avatar")
 	if err != nil {
 		panic(err.Error())
 	}
 
 	for result.Next() {
 		var avatar model.Icon_avatar
-		err := result.Scan(&avatar.Avatar_id, &avatar.Description, &avatar.Release_date)
+		err := result.Scan(&avatar.Avatar_id, &avatar.Description, &avatar.Release_date, &avatar.Free)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -62,13 +62,13 @@ func GeticonAvatar(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("avatar_id")
 
 	var avatar model.Icon_avatar
-	result, err := db.Query("SELECT * FROM t_icon_avatar WHERE avatar_id = ?", id)
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_icon_avatar WHERE avatar_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
 
 	for result.Next() {
-		err := result.Scan(&avatar.Avatar_id, &avatar.Description, &avatar.Release_date)
+		err := result.Scan(&avatar.Avatar_id, &avatar.Description, &avatar.Release_date, &avatar.Free)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -86,7 +86,7 @@ func UpdateiconAvatar(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_icon_avatar SET description = ? WHERE avatar_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_icon_avatar SET description = ? WHERE avatar_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -107,7 +107,7 @@ func DeleteiconAvatar(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("avatar_id")
 
-	stmt, err := db.Prepare("DELETE FROM t_icon_avatar WHERE avatar_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_icon_avatar WHERE avatar_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

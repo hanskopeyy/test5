@@ -13,7 +13,7 @@ type Mail struct {
 	Mail_id           *int    `json:"mail_id"`
 	Mail_type         *string `json:"mail_type"`
 	Sender_id         *int    `json:"sender_id"`
-	Reciever_id       *int    `json:"reciever_id"`
+	Receiver_id       *int    `json:"reciever_id"`
 	Send_date         *string `json:"send_date"`
 	Mail_template     *int    `json:"mail_template"`
 	Confirm_read      *int    `json:"confirm_read"`
@@ -25,9 +25,9 @@ type Mail struct {
 }
 
 type Mail_template struct {
-	Template_id int    `json:"template_id"`
-	Subject     string `json:"subject"`
-	Message     string `json:"message"`
+	Template_id int     `json:"template_id"`
+	Subject     *string `json:"subject"`
+	Message     *string `json:"message"`
 }
 
 type Mail_attachment struct {
@@ -37,6 +37,16 @@ type Mail_attachment struct {
 	Item_type         int  `json:"item_type"`
 	Amount            int  `json:"amount"`
 	Custom_message_id *int `json:"custom_message_id"`
+}
+
+type Mail_attachment_details struct {
+	Template_id       *int    `json:"template_id"`
+	Item_type_id      *int    `json:"item_type_id"`
+	Item_Id           *int    `json:"item_id"`
+	Item_type         *string `json:"item_type"`
+	Item_name         *string `json:"item_name"`
+	Amount            int     `json:"amount"`
+	Custom_message_id *int    `json:"custom_message_id"`
 }
 
 type Custom_mail struct {

@@ -17,7 +17,7 @@ func AddnewKsatriya(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_ksatriya(ksatriya_id, role, release_date, ksatriya_name) VALUES (?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_ksatriya(ksatriya_id, role, release_date, ksatriya_name) VALUES (?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -39,7 +39,7 @@ func GetKsatriyas(w http.ResponseWriter, r *http.Request) {
 	db := controller.Open()
 	defer db.Close()
 	var ksatriyas []model.Ksatriya
-	result, err := db.Query("SELECT * FROM t_ksatriya")
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_ksatriya")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -63,7 +63,7 @@ func GetKsatriya(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("ksatriya_id")
 
 	var ksatriya model.Ksatriya
-	result, err := db.Query("SELECT * FROM t_ksatriya WHERE ksatriya_id = ?", id)
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_ksatriya WHERE ksatriya_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -88,7 +88,7 @@ func UpdateKsatriya(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_ksatriya SET role = ?, release_date = ?, ksatriya_name = ? WHERE ksatriya_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_ksatriya SET role = ?, release_date = ?, ksatriya_name = ? WHERE ksatriya_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -110,7 +110,7 @@ func DeleteKsatriya(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("ksatriya_id")
 
-	stmt, err := db.Prepare("DELETE FROM t_ksatriya WHERE ksatriya_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_ksatriya WHERE ksatriya_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

@@ -17,7 +17,7 @@ func AddlottoColor(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_lotto_item_color(color_name,weight) VALUES (?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_lotto_item_color(color_name,weight) VALUES (?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -37,7 +37,7 @@ func GetlottoColors(w http.ResponseWriter, r *http.Request) {
 	db := controller.Open()
 	defer db.Close()
 	var l_colors []model.Lotto_item_color
-	result, err := db.Query("SELECT * FROM t_lotto_item_color")
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_lotto_item_color")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -60,7 +60,7 @@ func GetlottoColor(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var l_color model.Lotto_item_color
-	result, err := db.Query("SELECT * FROM t_lotto_item_color WHERE color_id = ?", id)
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_lotto_item_color WHERE color_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -84,7 +84,7 @@ func UpdatelottoColor(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_lotto_item_color SET color_name = ?, weight = ? WHERE color_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_lotto_item_color SET color_name = ?, weight = ? WHERE color_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -105,7 +105,7 @@ func DeletelottoColor(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_lotto_item_color WHERE color_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_lotto_item_color WHERE color_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

@@ -17,7 +17,7 @@ func AddKsatriyaSkin(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_ksatriya_skin(ksatriya_skin_id, ksatriya_id, release_date) VALUES (?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_ksatriya_skin(ksatriya_skin_id, ksatriya_id, release_date) VALUES (?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -39,14 +39,14 @@ func GetAllKsatriyaSkin(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var ksatriya_skins []model.Ksatriya_skin
 
-	result, err := db.Query("SELECT * from t_ksatriya_skin")
+	result, err := db.Query("SELECT B.ksatriya_skin_id, B.ksatriya_id, A.ksatriya_name, B.release_date FROM lokapala_accountdb.t_ksatriya A LEFT JOIN lokapala_accountdb.t_ksatriya_skin B ON A.ksatriya_id = B.ksatriya_id")
 	if err != nil {
 		panic(err.Error())
 	}
 
 	for result.Next() {
 		var ksatriya_skin model.Ksatriya_skin
-		err := result.Scan(&ksatriya_skin.Ksatriya_skin_id, &ksatriya_skin.Ksatriya_id, &ksatriya_skin.Release_date)
+		err := result.Scan(&ksatriya_skin.Ksatriya_skin_id, &ksatriya_skin.Ksatriya_id, &ksatriya_skin.Ksatriya_name, &ksatriya_skin.Release_date)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -65,14 +65,14 @@ func GetKsatriyaSkin(w http.ResponseWriter, r *http.Request) {
 	ksatriya_skin_id := r.URL.Query().Get("ksatriya_skin_id")
 
 	var ksatriya_skin model.Ksatriya_skin
-	result, err := db.Query("SELECT * from t_ksatriya_skin where ksatriya_skin_id = ? ", ksatriya_skin_id)
+	result, err := db.Query("SELECT B.ksatriya_skin_id, B.ksatriya_id, A.ksatriya_name, B.release_date FROM lokapala_accountdb.t_ksatriya A LEFT JOIN lokapala_accountdb.t_ksatriya_skin B ON A.ksatriya_id = B.ksatriya_id where ksatriya_skin_id = ? ", ksatriya_skin_id)
 	if err != nil {
 		panic(err.Error())
 	}
 
 	for result.Next() {
 
-		err := result.Scan(&ksatriya_skin.Ksatriya_skin_id, &ksatriya_skin.Ksatriya_id, &ksatriya_skin.Release_date)
+		err := result.Scan(&ksatriya_skin.Ksatriya_skin_id, &ksatriya_skin.Ksatriya_id, &ksatriya_skin.Ksatriya_name, &ksatriya_skin.Release_date)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -93,7 +93,7 @@ func UpdateKsatriyaSkin(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_ksatriya_skin SET ksatriya_id = ? where ksatriya_skin_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_ksatriya_skin SET ksatriya_id = ? where ksatriya_skin_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -114,7 +114,7 @@ func DeleteKsatriyaSkin(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	ksatriya_skin_id := r.URL.Query().Get("ksatriya_skin_id")
 
-	stmt, err := db.Prepare("DELETE FROM t_ksatriya_skin WHERE ksatriya_skin_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_ksatriya_skin WHERE ksatriya_skin_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

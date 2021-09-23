@@ -7,7 +7,6 @@ import (
 	"io"
 	"math/rand"
 	"net/http"
-	"os"
 	"path/filepath"
 	"strings"
 
@@ -19,6 +18,9 @@ import (
 const latin = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01233456789"
 
 func UploadFile(r *http.Request, form string, paths ...string) (string, string, error) {
+	connect := controller.FTP()
+	defer connect.Close()
+
 	err := r.ParseMultipartForm(10 * 1024 * 1024)
 	if err != nil {
 		panic(err)
@@ -44,27 +46,33 @@ func UploadFile(r *http.Request, form string, paths ...string) (string, string, 
 	newRandName := buffer + "." + fileExtension[len(fileExtension)-1]
 
 	// Get Path
-	fileLocation, err := os.Getwd()
+	fileLocation, err := connect.Getwd()
 	if err != nil {
 		panic(err.Error())
 	}
+	fileLocation = filepath.Join(fileLocation, "pub")
 	for _, path := range paths {
 		fileLocation = filepath.Join(fileLocation, path)
 	}
 	fileLocation = filepath.Join(fileLocation, newRandName)
 
-	locate, err := os.OpenFile(fileLocation, os.O_WRONLY|os.O_CREATE, 0666)
+	// Re Open file
+	reopenFile, err := fileHandler.Open()
 	if err != nil {
 		panic(err.Error())
 	}
+	defer reopenFile.Close()
 
-	io.Copy(locate, uploadedFile)
-
+	// Save file to FTP
+	err = connect.Store(fileLocation, reopenFile)
+	if err != nil {
+		panic(err.Error())
+	}
 	return newRandName, checksum, nil
 }
 
 func randomName(digit int) string {
-	db := controller.Open()
+	db := controller.OpenGMAdmin()
 	defer db.Close()
 
 	var buffer bytes.Buffer
@@ -93,14 +101,12 @@ func randomName(digit int) string {
 		// fmt.Println(newRandName)
 		// fmt.Println("Dupe found, re-randomizing name")
 		newRandName = randomName(7)
-	} else {
-		// fmt.Println("Success no dupe")
 	}
 	return newRandName
 }
 
 func CheckorUpload(r *http.Request, form string) (string, string, error) {
-	db := controller.Open()
+	db := controller.OpenGMAdmin()
 	defer db.Close()
 	err := r.ParseMultipartForm(10 * 1024 * 1024)
 	if err != nil {
@@ -110,7 +116,7 @@ func CheckorUpload(r *http.Request, form string) (string, string, error) {
 	getFromForm := r.Form.Get(form)
 	var checksum string
 	if len(getFromForm) == 0 {
-		getFromForm, checksum, err := UploadFile(r, form, "storage")
+		getFromForm, checksum, err := UploadFile(r, form, "Test")
 		if err != nil {
 			panic(err)
 		}

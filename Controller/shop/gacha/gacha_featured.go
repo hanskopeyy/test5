@@ -17,7 +17,7 @@ func AddFeaturedGacha(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_gacha_feature(gacha_id, gacha_item_id, priority) VALUES (?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_gacha_feature(gacha_id, gacha_item_id, priority) VALUES (?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -39,7 +39,7 @@ func GetAllFeaturedGacha(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var gacha_features []model.Gacha_feature
 
-	result, err := db.Query("SELECT * from t_gacha_feature")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_gacha_feature")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -65,7 +65,7 @@ func GetFeaturedGacha(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var gacha_feature model.Gacha_feature
-	result, err := db.Query("SELECT * from t_gacha_feature where gacha_feature_id = ? ", id)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_gacha_feature where gacha_feature_id = ? ", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -93,7 +93,7 @@ func UpdateFeaturedGacha(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_gacha_feature SET gacha_id = ?, gacha_item_id = ?, priority = ? where gacha_feature_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_gacha_feature SET gacha_id = ?, gacha_item_id = ?, priority = ? where gacha_feature_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -116,7 +116,7 @@ func DeleteFeaturedGacha(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_gacha_feature WHERE gacha_feature_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_gacha_feature WHERE gacha_feature_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

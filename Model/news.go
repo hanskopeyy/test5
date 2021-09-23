@@ -5,6 +5,7 @@ type News struct {
 	Name         string `json:"name"`
 	Release_date string `json:"release_date"`
 	Type         int    `json:"type"`
+	Type_name    string `json:"type_name"`
 }
 
 type News_detail struct {

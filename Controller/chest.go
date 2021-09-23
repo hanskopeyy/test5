@@ -16,7 +16,7 @@ func AddChest(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_chest(duration) VALUES (?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_chest(duration) VALUES (?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -36,7 +36,7 @@ func GetAllChest(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var chests []model.Chest
 
-	result, err := db.Query("SELECT * from t_chest")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_chest")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -62,7 +62,7 @@ func GetChest(w http.ResponseWriter, r *http.Request) {
 	duration := r.URL.Query().Get("duration")
 
 	var chest model.Chest
-	result, err := db.Query("SELECT * from t_chest where duration = ? ", duration)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_chest where duration = ? ", duration)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -90,7 +90,7 @@ func UpdateChest(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_chest SET duration = ? where duration = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_chest SET duration = ? where duration = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -111,7 +111,7 @@ func DeleteChest(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	duration := r.URL.Query().Get("duration")
 
-	stmt, err := db.Prepare("DELETE FROM t_chest WHERE duration = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_chest WHERE duration = ?")
 	if err != nil {
 		panic(err.Error())
 	}

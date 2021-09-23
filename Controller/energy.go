@@ -16,7 +16,7 @@ func AddEnergy(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_energy(energy_id, description, target) VALUES (?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_energy(energy_id, description, target) VALUES (?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -37,7 +37,7 @@ func GetEnergies(w http.ResponseWriter, r *http.Request) {
 	db := Open()
 	defer db.Close()
 	var energies []model.Energy
-	result, err := db.Query("SELECT * FROM t_energy")
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_energy")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -61,7 +61,7 @@ func GetEnergy(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("energy_id")
 
 	var energy model.Energy
-	result, err := db.Query("SELECT * FROM t_energy WHERE energy_id = ?", id)
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_energy WHERE energy_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -86,7 +86,7 @@ func UpdateEnergy(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_energy SET description = ?, target = ? WHERE energy_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_energy SET description = ?, target = ? WHERE energy_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -107,7 +107,7 @@ func DeleteEnergy(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("energy_id")
 
-	stmt, err := db.Prepare("DELETE FROM t_energy WHERE energy_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_energy WHERE energy_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

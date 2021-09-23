@@ -16,7 +16,7 @@ func AddBox(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_box(box_name, rand_value) VALUES (?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_box(box_name, rand_value) VALUES (?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -37,7 +37,7 @@ func GetAllBox(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var boxes []model.Box
 
-	result, err := db.Query("SELECT * from t_box")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_box")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -63,7 +63,7 @@ func GetBox(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var box model.Box
-	result, err := db.Query("SELECT * from t_box where box_id = ? ", id)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_box where box_id = ? ", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -91,7 +91,7 @@ func UpdateBox(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_box SET box_name = ?, rand_value = ? where box_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_box SET box_name = ?, rand_value = ? where box_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -113,7 +113,7 @@ func DeleteBox(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_box WHERE box_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_box WHERE box_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -135,7 +135,7 @@ func AddBoxLoot(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_box_loot_table(box_id, item_id, item_type, amount, chance, min, max) VALUES (?,?,?,?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_box_loot_table(box_id, item_id, item_type, amount, chance, min, max) VALUES (?,?,?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -161,7 +161,7 @@ func GetAllBoxLoot(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var loot_boxes []model.Box_loot_table
 
-	result, err := db.Query("SELECT * from t_box_loot_table")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_box_loot_table")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -187,7 +187,7 @@ func GetBoxLoot(w http.ResponseWriter, r *http.Request) {
 	uid := r.URL.Query().Get("uid")
 
 	var loot_box model.Box_loot_table
-	result, err := db.Query("SELECT * from t_box_loot_table where uid = ? ", uid)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_box_loot_table where uid = ? ", uid)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -215,7 +215,7 @@ func UpdateBoxLoot(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_box_loot_table SET box_id = ?, item_id = ?, item_type = ?, amount = ?, chance = ?, min = ?, max =? where uid = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_box_loot_table SET box_id = ?, item_id = ?, item_type = ?, amount = ?, chance = ?, min = ?, max =? where uid = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -242,7 +242,7 @@ func DeleteBoxLoot(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	uid := r.URL.Query().Get("uid")
 
-	stmt, err := db.Prepare("DELETE FROM t_box_loot_table WHERE uid = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_box_loot_table WHERE uid = ?")
 	if err != nil {
 		panic(err.Error())
 	}

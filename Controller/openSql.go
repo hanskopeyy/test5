@@ -32,3 +32,16 @@ func Open() (dbase *sql.DB) {
 	}
 	return dbase
 }
+
+func OpenGMAdmin() (dbase *sql.DB) {
+	driverGM := goDotEnvVariable("DB_DRIVER")
+	usernameGM := goDotEnvVariable("DB_USER_NAME_ADMIN")
+	passwordGM := goDotEnvVariable("DB_PASSWORD_ADMIN")
+	addressGM := goDotEnvVariable("DB_ADDRESS_ADMIN")
+	databaseGM := goDotEnvVariable("DB_DATABASE_ADMIN")
+	dbase, err := sql.Open(driverGM, usernameGM+":"+passwordGM+"@tcp("+addressGM+")"+"/"+databaseGM)
+	if err != nil {
+		panic(err.Error())
+	}
+	return dbase
+}

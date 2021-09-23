@@ -17,7 +17,7 @@ func AddShopBundle(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_shop_bundle(shop_id, item_type, item_id, amount) VALUES (?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_shop_bundle(shop_id, item_type, item_id, amount) VALUES (?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -40,7 +40,7 @@ func GetShopBundles(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var shop_bundles []model.Shop_bundle
 
-	result, err := db.Query("SELECT * from t_shop_bundle")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_shop_bundle")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -68,7 +68,7 @@ func GetShopBundle(w http.ResponseWriter, r *http.Request) {
 	id3 := r.URL.Query().Get("item_type")
 
 	var shop model.Shop_bundle
-	results, err := db.Prepare("SELECT * from t_shop_bundle where shop_id = ? AND item_id = ? AND item_type = ?")
+	results, err := db.Prepare("SELECT * from lokapala_accountdb.t_shop_bundle where shop_id = ? AND item_id = ? AND item_type = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -103,7 +103,7 @@ func UpdateShopBundle(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_shop_bundle SET item_id = ?, item_type = ?, amount = ? where shop_id = ? AND item_id = ? AND item_type = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_shop_bundle SET item_id = ?, item_type = ?, amount = ? where shop_id = ? AND item_id = ? AND item_type = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -128,7 +128,7 @@ func DeleteShopBundle(w http.ResponseWriter, r *http.Request) {
 	id2 := r.URL.Query().Get("item_id")
 	id3 := r.URL.Query().Get("item_type")
 
-	stmt, err := db.Prepare("DELETE FROM t_shop_bundle WHERE shop_id = ? AND item_id = ? AND item_type = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_shop_bundle WHERE shop_id = ? AND item_id = ? AND item_type = ?")
 	if err != nil {
 		panic(err.Error())
 	}

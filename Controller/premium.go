@@ -16,7 +16,7 @@ func AddPremium(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_premium(item_id, duration) VALUES (?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_premium(item_id, duration) VALUES (?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -36,7 +36,7 @@ func GetPremiums(w http.ResponseWriter, r *http.Request) {
 	db := Open()
 	defer db.Close()
 	var premiums []model.Premium
-	result, err := db.Query("SELECT * FROM t_premium")
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_premium")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -60,7 +60,7 @@ func GetPremium(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("item_id")
 
 	var premium model.Premium
-	result, err := db.Query("SELECT * FROM t_premium WHERE item_id = ?", id)
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_premium WHERE item_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -85,7 +85,7 @@ func UpdatePremium(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_premium SET duration = ? WHERE item_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_premium SET duration = ? WHERE item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -105,7 +105,7 @@ func DeletePremium(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("item_id")
 
-	stmt, err := db.Prepare("DELETE FROM t_premium WHERE item_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_premium WHERE item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

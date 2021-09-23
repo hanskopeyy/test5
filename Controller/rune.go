@@ -16,7 +16,7 @@ func AddRune(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_rune(rune_id, name, description, rune_color) VALUES (?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_rune(rune_id, name, description, rune_color) VALUES (?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -38,7 +38,7 @@ func GetRunes(w http.ResponseWriter, r *http.Request) {
 	db := Open()
 	defer db.Close()
 	var runes []model.Rune
-	result, err := db.Query("SELECT * FROM t_rune")
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_rune")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -61,7 +61,7 @@ func GetRune(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("rune_id")
 
 	var rune model.Rune
-	result, err := db.Query("SELECT * FROM t_rune WHERE rune_id = ?", id)
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_rune WHERE rune_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -86,7 +86,7 @@ func UpdateRune(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_rune SET name = ?, description = ?, rune_color = ? WHERE rune_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_rune SET name = ?, description = ?, rune_color = ? WHERE rune_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -108,7 +108,7 @@ func DeleteRune(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("rune_id")
 
-	stmt, err := db.Prepare("DELETE FROM t_rune WHERE rune_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_rune WHERE rune_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

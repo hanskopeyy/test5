@@ -17,7 +17,7 @@ func AddLotusPeriod(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_shop_lotus_period(start_date, end_date) VALUES (?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_shop_lotus_period(start_date, end_date) VALUES (?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -38,7 +38,7 @@ func LotusGetShopPeriods(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var shop_periods []model.Shop_lotus_period
 
-	result, err := db.Query("SELECT * from t_shop_lotus_period")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_shop_lotus_period")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -64,7 +64,7 @@ func LotusGetShopPeriod(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var shop_item model.Shop_lotus_item
-	result, err := db.Query("SELECT * from t_shop_lotus_period where shop_lotus_period_id = ?", id)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_shop_lotus_period where shop_lotus_period_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -92,7 +92,7 @@ func LotusUpdateShopPeriod(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_shop_lotus_period SET start_date = ?, end_date = ? where shop_lotus_period_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_shop_lotus_period SET start_date = ?, end_date = ? where shop_lotus_period_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -114,7 +114,7 @@ func LotusDeleteShopPeriod(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_shop_lotus_period WHERE shop_lotus_period_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_shop_lotus_period WHERE shop_lotus_period_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

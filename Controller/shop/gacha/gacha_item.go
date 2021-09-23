@@ -17,7 +17,7 @@ func AddGachaItem(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_gacha_item(item_type, item_id, amount) VALUES (?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_gacha_item(item_type, item_id, amount) VALUES (?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -39,7 +39,7 @@ func GetAllGachaItem(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var gacha_items []model.Gacha_item
 
-	result, err := db.Query("SELECT * from t_gacha_item")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_gacha_item")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -65,7 +65,7 @@ func GetGachaItem(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var gacha_item model.Gacha_item
-	result, err := db.Query("SELECT * from t_gacha_item where gacha_item_id = ? ", id)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_gacha_item where gacha_item_id = ? ", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -93,7 +93,7 @@ func UpdateGachaItem(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_gacha_item SET item_type = ?, item_id = ?, amount = ? where gacha_item_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_gacha_item SET item_type = ?, item_id = ?, amount = ? where gacha_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -116,7 +116,7 @@ func DeleteGachaItem(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_gacha_item WHERE gacha_item_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_gacha_item WHERE gacha_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

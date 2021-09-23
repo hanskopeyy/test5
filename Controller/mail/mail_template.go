@@ -17,12 +17,7 @@ func Createtemplate(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_mail_template(subject, message) VALUES (?,?)")
-	if err != nil {
-		panic(err.Error())
-	}
-
-	stmt2, err := db.Prepare("INSERT INTO t_mail_attachment(template_id, item_id, item_type, amount) VALUES (?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_mail_template(subject, message) VALUES (?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -43,9 +38,18 @@ func Createtemplate(w http.ResponseWriter, r *http.Request) {
 	item_id := r.Form.Get("item_id")
 	amount := r.Form.Get("amount")
 
-	_, err = stmt2.Exec(template_id, item_id, item_type_id, amount)
-	if err != nil {
-		panic(err.Error())
+	if item_type_id != "" && item_id != "" && amount != "" {
+
+		stmt2, err := db.Prepare("INSERT INTO lokapala_accountdb.t_mail_attachment(template_id, item_id, item_type, amount) VALUES (?,?,?,?)")
+		if err != nil {
+			panic(err.Error())
+		}
+
+		_, err = stmt2.Exec(template_id, item_id, item_type_id, amount)
+		if err != nil {
+			panic(err.Error())
+		}
+
 	}
 
 	json.NewEncoder(w).Encode("Success")
@@ -57,7 +61,7 @@ func Gettemplates(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var templates []model.Mail_template
 
-	result, err := db.Query("SELECT * from t_mail_template")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_mail_template")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -83,7 +87,7 @@ func Gettemplate(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var template model.Mail_template
-	result, err := db.Query("SELECT * from t_mail_template where template_id = ?", id)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_mail_template where template_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -111,7 +115,7 @@ func Updatetemplates(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_mail_template SET subject = ?, message = ? where template_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_mail_template SET subject = ?, message = ? where template_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -133,7 +137,17 @@ func DeleteTemplates(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("template_id")
 
-	stmt, err := db.Prepare("DELETE FROM t_mail_template WHERE template_id = ?")
+	stmt2, err := db.Prepare("DELETE FROM lokapala_accountdb.t_mail_attachment WHERE template_id = ? AND custom_message_id = NULL")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	_, err = stmt2.Exec(id)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_mail_template WHERE template_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

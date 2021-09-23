@@ -17,7 +17,7 @@ func AddGachaLoot(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_gacha_loot_table(gacha_id, gacha_item_id, chance, min_value, max_value) VALUES (?,?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_gacha_loot_table(gacha_id, gacha_item_id, chance, min_value, max_value) VALUES (?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -41,7 +41,7 @@ func GetAllGachaLoot(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var gacha_loots []model.Gacha_loot_table
 
-	result, err := db.Query("SELECT * from t_gacha_loot_table")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_gacha_loot_table")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -68,7 +68,7 @@ func GetGachaLoot(w http.ResponseWriter, r *http.Request) {
 	id2 := r.URL.Query().Get("id2")
 
 	var gacha_loot model.Gacha_loot_table
-	results, err := db.Prepare("SELECT * from t_gacha_loot_table where gacha_id = ? AND gacha_item_id =? ")
+	results, err := db.Prepare("SELECT * from lokapala_accountdb.t_gacha_loot_table where gacha_id = ? AND gacha_item_id =? ")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -102,7 +102,7 @@ func UpdateGachaLoot(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_gacha_loot_table SET gacha_id = ?, gacha_item_id = ?, chance = ?, min_value =?, max_value = ? where gacha_id = ? AND gacha_item_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_gacha_loot_table SET gacha_id = ?, gacha_item_id = ?, chance = ?, min_value =?, max_value = ? where gacha_id = ? AND gacha_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -128,7 +128,7 @@ func DeleteGachaLoot(w http.ResponseWriter, r *http.Request) {
 	id1 := r.URL.Query().Get("id1")
 	id2 := r.URL.Query().Get("id2")
 
-	stmt, err := db.Prepare("DELETE FROM t_gacha_loot_table WHERE gacha_id = ? AND gacha_item_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_gacha_loot_table WHERE gacha_id = ? AND gacha_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

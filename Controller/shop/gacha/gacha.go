@@ -17,7 +17,7 @@ func AddGacha(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_gacha(start_date, end_date, random_value) VALUES (?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_gacha(start_date, end_date, random_value) VALUES (?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -39,7 +39,7 @@ func GetAllGacha(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var gachas []model.Gacha
 
-	result, err := db.Query("SELECT * from t_gacha")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_gacha")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -65,7 +65,7 @@ func GetGacha(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var gacha model.Gacha
-	result, err := db.Query("SELECT * from t_gacha where gacha_id = ? ", id)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_gacha where gacha_id = ? ", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -93,7 +93,7 @@ func UpdateGacha(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_gacha SET start_date = ?, end_date = ?, random_value = ? where gacha_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_gacha SET start_date = ?, end_date = ?, random_value = ? where gacha_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -116,7 +116,7 @@ func DeleteGacha(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_gacha WHERE gacha_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_gacha WHERE gacha_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

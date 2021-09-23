@@ -20,7 +20,7 @@ func AddShopItem(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_shop(item_id, item_type, amount, price_coin, price_citrine, price_lotus, release_date, description) VALUES (?,?,?,?,?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_shop(item_id, item_type, amount, price_coin, price_citrine, price_lotus, release_date, description) VALUES (?,?,?,?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -47,7 +47,7 @@ func GetShopItems(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var shops []model.Shop
-	result, err := db.Query("SELECT * from t_shop")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_shop")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -73,7 +73,7 @@ func GetShopItem(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var shop model.Shop
-	result, err := db.Query("SELECT * from t_shop where shop_id = ?", id)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_shop where shop_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -101,7 +101,7 @@ func UpdateShopItem(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_shop SET item_id = ?, item_type = ?, amount = ?, price_coin = ?, price_citrine = ?, price_lotus = ?, release_date =?, description =?  where shop_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_shop SET item_id = ?, item_type = ?, amount = ?, price_coin = ?, price_citrine = ?, price_lotus = ?, release_date =?, description =?  where shop_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -129,7 +129,7 @@ func DeleteShopItem(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_shop WHERE shop_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_shop WHERE shop_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

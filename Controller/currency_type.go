@@ -16,7 +16,7 @@ func AddCurrencyType(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_currency_type(name) VALUES (?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_currency_type(name) VALUES (?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -36,7 +36,7 @@ func GetAllCurrencyTypes(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var currencies []model.Currency
 
-	result, err := db.Query("SELECT * from t_currency_type")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_currency_type")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -62,7 +62,7 @@ func GetCurrencyType(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var currency model.Currency
-	result, err := db.Query("SELECT * from t_currency_type where currency_id = ? ", id)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_currency_type where currency_id = ? ", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -90,7 +90,7 @@ func UpdateCurrencyType(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_currency_type SET name = ? where currency_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_currency_type SET name = ? where currency_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -111,7 +111,7 @@ func DeleteCurrencyType(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_currency_type WHERE currency_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_currency_type WHERE currency_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

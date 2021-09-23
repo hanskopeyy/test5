@@ -18,7 +18,7 @@ func AddnewLotto(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_lotto(start_date, end_date) VALUES (?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_lotto(start_date, end_date) VALUES (?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -39,7 +39,7 @@ func GetallLottos(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var lottos []model.Lotto
 
-	result, err := db.Query("SELECT * FROM t_lotto")
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_lotto")
 	if err != nil {
 		panic(err.Error())
 	}

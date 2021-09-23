@@ -17,7 +17,7 @@ func AddlottoItem(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_lotto_item(item_type,item_id,amount,color_id,default_amount,item_name) VALUES (?,?,?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_lotto_item(item_type,item_id,amount,color_id,default_amount,item_name) VALUES (?,?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -41,7 +41,7 @@ func GetlottoItems(w http.ResponseWriter, r *http.Request) {
 	db := controller.Open()
 	defer db.Close()
 	var l_items []model.Lotto_item
-	result, err := db.Query("SELECT * FROM t_lotto_item")
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_lotto_item")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -65,7 +65,7 @@ func GetlottoItem(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var l_item model.Lotto_item
-	result, err := db.Query("SELECT * FROM t_lotto_item WHERE lotto_item_id = ?", id)
+	result, err := db.Query("SELECT * FROM lokapala_accountdb.t_lotto_item WHERE lotto_item_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -91,7 +91,7 @@ func UpdatelottoItem(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_lotto_item SET item_type = ?, item_id = ?, amount = ?, color_id = ?, default_amount = ?, item_name = ? WHERE lotto_item_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_lotto_item SET item_type = ?, item_id = ?, amount = ?, color_id = ?, default_amount = ?, item_name = ? WHERE lotto_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -116,7 +116,7 @@ func DeletelottoItem(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_lotto_item WHERE lotto_item_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_lotto_item WHERE lotto_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}

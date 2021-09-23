@@ -17,7 +17,7 @@ func LotusAddNewItem(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("INSERT INTO t_shop_lotus_item(item_type, item_id, amount, price, default_limit) VALUES (?,?,?,?,?)")
+	stmt, err := db.Prepare("INSERT INTO lokapala_accountdb.t_shop_lotus_item(item_type, item_id, amount, price, default_limit) VALUES (?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -41,7 +41,7 @@ func LotusGetShopItems(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	var shop_items []model.Shop_lotus_item
 
-	result, err := db.Query("SELECT * from t_shop_lotus_item")
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_shop_lotus_item")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -67,7 +67,7 @@ func LotusGetShopItem(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 
 	var shop_item model.Shop_lotus_item
-	result, err := db.Query("SELECT * from t_shop_lotus_item where shop_lotus_item_id = ?", id)
+	result, err := db.Query("SELECT * from lokapala_accountdb.t_shop_lotus_item where shop_lotus_item_id = ?", id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -95,7 +95,7 @@ func LotusUpdateShopItem(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	stmt, err := db.Prepare("UPDATE t_shop_lotus_item SET item_type = ?, item_id = ?, amount = ?, price = ?, default_limit = ? where shop_lotus_item_id = ?")
+	stmt, err := db.Prepare("UPDATE lokapala_accountdb.t_shop_lotus_item SET item_type = ?, item_id = ?, amount = ?, price = ?, default_limit = ? where shop_lotus_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -120,7 +120,7 @@ func LotusDeleteShopItem(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	id := r.URL.Query().Get("id")
 
-	stmt, err := db.Prepare("DELETE FROM t_shop_lotus_item WHERE shop_lotus_item_id = ?")
+	stmt, err := db.Prepare("DELETE FROM lokapala_accountdb.t_shop_lotus_item WHERE shop_lotus_item_id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
