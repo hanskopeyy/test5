@@ -1,11 +1,11 @@
 package model
 
 type News struct {
-	Id           int64  `json:"id"`
-	Name         string `json:"name"`
-	Release_date string `json:"release_date"`
-	Type         int    `json:"type"`
-	Type_name    string `json:"type_name"`
+	Id           int64   `json:"id"`
+	Name         string  `json:"name"`
+	Release_date *string `json:"release_date"`
+	Type         int     `json:"type"`
+	Type_name    string  `json:"type_name"`
 }
 
 type News_detail struct {

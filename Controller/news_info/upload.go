@@ -116,7 +116,7 @@ func CheckorUpload(r *http.Request, form string) (string, string, error) {
 	getFromForm := r.Form.Get(form)
 	var checksum string
 	if len(getFromForm) == 0 {
-		getFromForm, checksum, err := UploadFile(r, form, "Test")
+		getFromForm, checksum, err := UploadFile(r, form, "NewsInfo")
 		if err != nil {
 			panic(err)
 		}

@@ -15,7 +15,6 @@ func RouteUser(r *mux.Router) *mux.Router {
 	//roles
 	route_user.HandleFunc("/getAllUsers", admin.GetAllUsers).Methods("GET")
 	route_user.HandleFunc("/getUser", admin.GetUser).Methods("GET")
-	route_user.HandleFunc("/getCurrentUserLogin", admin.GetCurrentUserLogin).Methods("GET")
 	route_user.HandleFunc("/updateUser", admin.UpdateUser).Methods("PUT")
 	route_user.HandleFunc("/updateUserPassword", admin.UpdateUserPassword).Methods("PUT")
 	route_user.HandleFunc("/deleteUser", admin.DeleteUser).Methods("DELETE")

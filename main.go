@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	controller "github.com/sen329/test5/Controller"
+	"github.com/sen329/test5/Controller/admin"
 	middleware "github.com/sen329/test5/Middleware"
 	"github.com/sen329/test5/Routers"
 
@@ -31,6 +32,7 @@ func main() {
 	route := router.PathPrefix("/api").Subrouter()
 	route.Use(middleware.Middleware)
 	route.HandleFunc("/test", controller.Test).Methods("GET")
+	route.HandleFunc("/getCurrentUserLogin", admin.GetCurrentUserLogin)
 
 	route.Handle("/", Routers.RouteIcon(route))
 	route.Handle("/", Routers.RouteKsatriya(route))
